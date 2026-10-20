@@ -1,0 +1,11 @@
+@import "tailwincss";
+body{
+    display: grid;
+}
+.header-element {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 10px 15px 50px;
+    gap: 20px;
+    background-color: rgb(12, 12, 76);
+}
