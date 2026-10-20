@@ -37,6 +37,158 @@
                 80 DH per seat</p>
         </div>
     </section>
+    <div aria-label="Live statistics" class="mb-4 grid grid-cols-3 gap-3">
+        <div class="rounded-2xl border border-slate-200 bg-white p-3 text-center shadow-xs sm:p-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Available</p>
+            <p id="stat-available" class="mt-1 text-2xl font-bold text-teal-700">20</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-3 text-center shadow-xs sm:p-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Occupied</p>
+            <p id="stat-occupied" class="mt-1 text-2xl font-bold text-slate-900">0</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-3 text-center shadow-xs sm:p-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Revenue</p>
+            <p id="stat-revenue" class="mt-1 text-2xl font-bold text-teal-700">0 DH</p>
+        </div>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <section aria-labelledby="plan-title" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs sm:p-6">
+            <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+                <h2 id="plan-title" class="text-base font-bold text-slate-900">Seating plan</h2>
+                <div aria-label="Seat status legend" class="flex flex-wrap items-center gap-4 text-xs text-slate-600">
+                    <span class="flex flex-col items-center gap-1">
+                        <span class="flex cursor-default flex-col items-center" aria-hidden="true">
+                            <span class="h-2 w-4 rounded-t-sm border border-gray-300 bg-white"></span>
+                            <span
+                                class="-mt-px flex h-5 w-5 items-center justify-center rounded-sm border border-gray-300 bg-white"></span>
+                            <span class="-mt-1 flex items-end">
+                                <span class="h-2 w-1 rounded-l-sm border border-gray-300 bg-white"></span>
+                                <span class="h-2 w-5 rounded-sm border border-gray-300 bg-white"></span>
+                                <span class="h-2 w-1 rounded-r-sm border border-gray-300 bg-white"></span>
+                            </span>
+                        </span>Available</span>
+                    <span class="flex flex-col items-center gap-1">
+                        <span class="flex cursor-default flex-col items-center" aria-hidden="true">
+                            <span class="h-2 w-4 rounded-t-sm border border-teal-700 bg-teal-600"></span>
+                            <span
+                                class="-mt-px flex h-5 w-5 items-center justify-center rounded-sm border border-teal-700 bg-teal-600"></span>
+                            <span class="-mt-1 flex items-end">
+                                <span class="h-2 w-1 rounded-l-sm border border-teal-700 bg-teal-600"></span>
+                                <span class="h-2 w-5 rounded-sm border border-teal-700 bg-teal-600"></span>
+                                <span class="h-2 w-1 rounded-r-sm border border-teal-700 bg-teal-600"></span>
+                            </span>
+                        </span>Occupied</span>
+                    <span class="flex flex-col items-center gap-1">
+                        <span class="flex cursor-default flex-col items-center" aria-hidden="true">
+                            <span class="h-2 w-4 rounded-t-sm border border-teal-600 bg-teal-100"></span>
+                            <span
+                                class="-mt-px flex h-5 w-5 items-center justify-center rounded-sm border border-teal-600 bg-teal-100"></span>
+                            <span class="-mt-1 flex items-end">
+                                <span class="h-2 w-1 rounded-l-sm border border-teal-600 bg-teal-100"></span>
+                                <span class="h-2 w-5 rounded-sm border border-teal-600 bg-teal-100"></span>
+                                <span class="h-2 w-1 rounded-r-sm border border-teal-600 bg-teal-100"></span>
+                            </span>
+                        </span>Selected</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="search-input" class="mb-1 block text-sm font-semibold text-slate-700">Find passenger</label>
+                <div class="relative">
+                    <img src="./assets/search.svg" alt="" aria-hidden="true"
+                        class="pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-slate-400 [filter:brightness(0)_saturate(100%)_invert(49%)_sepia(11%)_saturate(500%)_hue-rotate(175deg)_brightness(94%)_contrast(90%)]" />
+                    <input id="search-input" type="search" autocomplete="off" placeholder="Search by name, e.g. Ahmed"
+                        class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pl-10 text-sm placeholder:text-slate-400" />
+                </div>
+                <p id="search-empty" class="mt-1 text-sm font-medium text-amber-700 hidden" role="status">No passenger
+                    matches your search.</p>
+            </div>
+
+            <div id="seat-map" class="min-h-32"></div>
+            <p class="mt-3 text-xs text-slate-500">Click an available seat to start a booking, or click an occupied seat
+                (or drag a passenger badge onto a free seat) to reassign.</p>
+        </section>
+
+        <div class="flex flex-col gap-6">
+            <section aria-labelledby="reserve-title"
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5">
+                <h2 id="reserve-title" class="mb-3 text-base font-bold text-slate-900">New reservation</h2>
+                <form id="reserve-form" novalidate>
+                    <label for="reserve-name" class="mb-1 block text-sm font-semibold text-slate-700">Passenger
+                        name</label>
+                    <input id="reserve-name" name="reserve-name" type="text" autocapitalize="none" enterkeyhint="done"
+                        autocomplete="off" maxlength="60" placeholder="e.g. Ahmed Amine"
+                        class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400" />
+                    <label for="reserve-seat" class="mb-1 block text-sm font-semibold text-slate-700">Seat
+                        (optional)</label>
+                    <select id="reserve-seat" name="reserve-seat"
+                        class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
+                        <option value="">Choose a seat</option>
+                    </select>
+                    <button type="submit" id="reserve-submit"
+                        class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-700 active:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50">
+                       <i class="fa-solid fa-plus"></i>
+                        Reserve seat — 80 DH
+                    </button>
+                </form>
+                <div id="reserve-notification" class="mt-3" aria-live="polite"></div>
+                <div id="ticket-preview" class="mt-3 hidden" role="status" aria-live="polite"></div>
+            </section>
+
+            <section aria-labelledby="modify-title"
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5">
+                <h2 id="modify-title" class="mb-3 text-base font-bold text-slate-900">Modify reservation</h2>
+                <form id="modify-form" novalidate>
+                    <label for="modify-passenger"
+                        class="mb-1 block text-sm font-semibold text-slate-700">Passenger</label>
+                    <select id="modify-passenger" name="modify-passenger"
+                        class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
+                        <option value="">Select a passenger…</option>
+                    </select>
+                    <label for="modify-name" class="mb-1 block text-sm font-semibold text-slate-700">Passenger
+                        name</label>
+                    <input id="modify-name" type="text" autocapitalize="none" enterkeyhint="done" autocomplete="off"
+                        maxlength="60"
+                        class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400"
+                        placeholder="Name appears after selecting a passenger" />
+                    <label for="modify-seat" class="mb-1 block text-sm font-semibold text-slate-700">Destination
+                        seat</label>
+                    <select id="modify-seat"
+                        class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
+                        <option value="">No reservation selected</option>
+                    </select>
+                    <button type="submit"
+                        class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-slate-800 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700 active:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-50">
+                        <img src="./assets/check.svg" alt="" aria-hidden="true" class="h-4 w-4 shrink-0" />
+                        Save changes
+                    </button>
+                </form>
+                <div id="modify-notification" class="mt-3" aria-live="polite"></div>
+            </section>
+
+            <section aria-labelledby="cancel-title"
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5">
+                <h2 id="cancel-title" class="mb-3 text-base font-bold text-slate-900">Cancel reservation</h2>
+                <form id="cancel-form" novalidate>
+                    <label for="cancel-passenger"
+                        class="mb-1 block text-sm font-semibold text-slate-700">Passenger</label>
+                    <select id="cancel-passenger" name="cancel-passenger"
+                        class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
+                        <option value="">Select a passenger…</option>
+                    </select>
+                    <p id="cancel-details" class="mb-3 text-sm text-slate-600 hidden"></p>
+                    <button type="submit"
+                        class="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-rose-300 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-700 transition-colors hover:bg-rose-100 active:bg-rose-200 disabled:cursor-not-allowed disabled:opacity-50">
+                        <img src="./assets/trash.svg" alt="" aria-hidden="true" class="h-4 w-4 shrink-0" />
+                        Cancel reservation
+                    </button>
+                </form>
+                <div id="cancel-notification" class="mt-3" aria-live="polite"></div>
+            </section>
+        </div>
+    </div>
+    </main>
     <script src="script.js"></script>
 </body>
 
