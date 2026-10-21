@@ -19,9 +19,9 @@
     <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-900 text-white">
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
             <a href="./index.html" aria-label="BusDirect home" class="flex min-w-0 items-center gap-2.5 rounded-lg">
-                <span class="flex rounded-xl bg-teal-500/10 p-1.5 shadow-[0_0_0_1px_rgb(45_212_191_/_0.25)]">
+                <span class="flex rounded-xl bg-teal-500/10 p-1.5 shadow-[0_0_0_1px_rgb(45_212_191/0.25)]">
                     <img src="img/bus.svg" alt="" aria-hidden="true"
-                        class="h-6 w-6 [filter:invert(74%)_sepia(66%)_saturate(407%)_hue-rotate(124deg)_brightness(96%)_contrast(90%)]" />
+                        class="h-6 w-6 filter-[invert(74%)_sepia(66%)_saturate(407%)_hue-rotate(124deg)_brightness(96%)_contrast(90%)]">
                 </span>
                 <span class="min-w-0">
                     <span
@@ -41,7 +41,7 @@
                 <a href="./tickets.html"
                     class="inline-flex min-h-11 items-center gap-2 rounded-lg px-2.5 py-2 text-sm font-semibold text-slate-300 transition-colors hover:bg-slate-700 hover:text-white sm:px-4">
                     <img src="img/heroicons_ticket.svg" alt="" aria-hidden="true"
-                        class="h-4 w-4 shrink-0 [filter:brightness(0)_invert(0.82)]" />
+                        class="h-4 w-4 shrink-0 filter-[brightness(0)_invert(0.82)]">
                     Tickets
                 </a>
             </nav>
@@ -54,7 +54,7 @@
             <h1 class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-2xl font-bold sm:text-4xl">
                 <span>Safi</span>
                 <img src="img/route-arrow.svg" alt="" aria-hidden="true"
-                    class="h-6 w-6 shrink-0 sm:h-8 sm:w-8 [filter:brightness(0)_saturate(100%)_invert(63%)_sepia(11%)_saturate(540%)_hue-rotate(152deg)_brightness(92%)_contrast(95%)]" />
+                    class="h-6 w-6 shrink-0 sm:h-8 sm:w-8 filter-[brightness(0)_saturate(100%)_invert(63%)_sepia(11%)_saturate(540%)_hue-rotate(152deg)_brightness(92%)_contrast(95%)]">
                 <span>Marrakech</span>
             </h1>
             <p class="mt-2 text-sm text-slate-300">20-seat coach · 80 DH per seat</p>
@@ -64,7 +64,7 @@
             class="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900 hidden"
             role="status">
             <img src="img/warning.svg" alt="" aria-hidden="true"
-                class="mr-1 inline-block h-5 w-5 align-[-3px] [filter:brightness(0)_saturate(100%)_invert(31%)_sepia(58%)_saturate(494%)_hue-rotate(33deg)_brightness(94%)_contrast(95%)]" />
+                class="mr-1 inline-block h-5 w-5 align-[-3px] filter-[brightness(0)_saturate(100%)_invert(31%)_sepia(58%)_saturate(494%)_hue-rotate(33deg)_brightness(94%)_contrast(95%)]">
             The bus is full — all 20 seats are occupied. New reservations are paused until a seat is released.
         </div>
 
@@ -131,7 +131,7 @@
                         passenger</label>
                     <div class="relative">
                         <img src="img/search.svg" alt="" aria-hidden="true"
-                            class="pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-slate-400 [filter:brightness(0)_saturate(100%)_invert(49%)_sepia(11%)_saturate(500%)_hue-rotate(175deg)_brightness(94%)_contrast(90%)]" />
+                            class="pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-slate-400 filter-[brightness(0)_saturate(100%)_invert(49%)_sepia(11%)_saturate(500%)_hue-rotate(175deg)_brightness(94%)_contrast(90%)]">
                         <input id="search-input" type="search" autocomplete="off"
                             placeholder="Search by name, e.g. Ahmed"
                             class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pl-10 text-sm placeholder:text-slate-400" />
@@ -152,7 +152,7 @@
                             </div>
                             <span class="text-xs text-slate-400">Devant</span>
                         </div>
-                        <div id="seats-grid" class="grid grid-cols-4 gap-3" style="100vw">
+                        <div id="seats-grid" class="grid grid-cols-4 gap-3">
 
                             <!-- Place 01 -->
                             <button type="button" data-seat="1"
@@ -308,7 +308,28 @@
                             (optional)</label>
                         <select id="reserve-seat" name="reserve-seat"
                             class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
-                            <option value="">Choose a seat</option>
+                            <option value="">Choose a seat
+                            <option value="1">seat 1</option>
+                            <option value="2">seat 2</option>
+                            <option value="3">seat 3</option>
+                            <option value="4">seat 4</option>
+                            <option value="5">seat 5</option>
+                            <option value="6">seat 6</option>
+                            <option value="7">seat 7</option>
+                            <option value="8">seat 8</option>
+                            <option value="9">seat 9</option>
+                            <option value="10">seat 10</option>
+                            <option value="11">seat 11</option>
+                            <option value="12">seat 12</option>
+                            <option value="13">seat 13</option>
+                            <option value="14">seat 14</option>
+                            <option value="15">seat 15</option>
+                            <option value="16">seat 16</option>
+                            <option value="17">seat 17</option>
+                            <option value="18">seat 18</option>
+                            <option value="19">seat 19</option>
+                            <option value="20">seat 20</option>
+                            </option>
                         </select>
                         <button type="submit" id="reserve-submit"
                             class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-700 active:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50">
