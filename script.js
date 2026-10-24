@@ -1,120 +1,177 @@
+// varibles needed : 
+const seatsGrid = document.getElementById('seats-grid');
+const busFullBanner = document.getElementById('bus-full-banner');
+
+const statAvailable = document.getElementById('stat-available');
+const statOccupied = document.getElementById('stat-occupied');
+const statRevenue = document.getElementById('stat-revenue');
+
 const reserveForm = document.getElementById('reserve-form');
-const nameInput = document.getElementById('reserve-name');
-const seatSelect = document.getElementById('reserve-seat');
-const note = document.getElementById('reserve-notification');
+const reserveName = document.getElementById('reserve-name');
+const reserveSeat = document.getElementById('reserve-seat');
+const reserveNotification = document.getElementById('reserve-notification');
 
 const modifyForm = document.getElementById('modify-form');
 const modifyPassenger = document.getElementById('modify-passenger');
 const modifyName = document.getElementById('modify-name');
 const modifySeat = document.getElementById('modify-seat');
-const modifyNote = document.getElementById('modify-notification');
+const modifyNotification = document.getElementById('modify-notification');
+
+const cancelForm = document.getElementById('cancel-form');
+const cancelPassenger = document.getElementById('cancel-passenger');
+const cancelDetails = document.getElementById('cancel-details');
+const cancelNotification = document.getElementById('cancel-notification');
+
+const TOTAL_SEATS = 20;
+const SEAT_PRICE = 80;
+
+function getSeatButton(number) {
+    return seatsGrid.querySelector(`button[data-seat="${number}"]`);
+}
+
+function fillSeat(number, name) {
+    const seat = getSeatButton(number);
+    seat.dataset.occupied = "true";
+    seat.style.background = "#0d9488";
+    seat.style.color = "white";
+    seat.innerHTML = `<span style="font-weight:bold;">${number}</span>
+        <span class="seat-name" style="font-size:11px;">${name}</span>`;
+}
+
+function freeSeat(number) {
+    const seat = getSeatButton(number);
+    seat.removeAttribute('data-occupied');
+    seat.style.background = "white";
+    seat.style.color = "black";
+    seat.innerHTML = `<span style="font-weight:bold;">${number}</span>
+            <span style="font-size:11px;">Libre</span>`;
+}
 
 function updateStats() {
-    const occCount = document.querySelectorAll('button[data-occupied="true"]').length;
-    document.getElementById('stat-occupied').textContent = occCount;
-    document.getElementById('stat-available').textContent = 20 - occCount;
-    document.getElementById('stat-revenue').textContent = (occCount * 80) + " DH";
+    const occupied = seatsGrid.querySelectorAll('button[data-occupied="true"]').length;
+    statOccupied.textContent = occupied;
+    statAvailable.textContent = TOTAL_SEATS - occupied;
+    statRevenue.textContent = occupied * SEAT_PRICE + " DH";
+    busFullBanner.classList.toggle('hidden', occupied < TOTAL_SEATS);
 }
 
-function updatePassengerDropdowns() {
-    const occupiedBtns = Array.from(document.querySelectorAll('button[data-occupied="true"]'));
-    const optionsHtml = '<option value="">Select a passenger…</option>' + 
-        occupiedBtns.map(b => `<option value="${b.dataset.seat}">${b.querySelector('.seat-name').textContent} (Seat ${b.dataset.seat})</option>`).join('');
-    
-    modifyPassenger.innerHTML = optionsHtml;
+function updatePassengerLists() {
+    let options = '<option value="">Select a passenger…</option>';
+    seatsGrid.querySelectorAll('button[data-occupied="true"]').forEach(seat => {
+        const number = seat.dataset.seat;
+        const name = seat.querySelector('.seat-name').textContent;
+        options += `<option value="${number}">${name} (Seat ${number})</option>`;
+    });
+    modifyPassenger.innerHTML = options;
+    cancelPassenger.innerHTML = options;
 }
 
-function showNote(element, msg, isError) {
-    if (!msg) {
-        element.textContent = "";
-        element.style.cssText = "";
+// ---------- create ----------
+reserveForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = reserveName.value.trim();
+    let seatNumber = reserveSeat.value;
+
+    if (name === "") {
+        reserveNotification.textContent = "Please enter a name!";
         return;
     }
-    element.style.cssText = `margin-top: 10px; padding: 10px; border-radius: 8px; font-size: 14px; background: ${isError ? '#fff1f2' : '#f0fdf4'}; color: ${isError ? '#be123c' : '#15803d'}; border: 1px solid ${isError ? '#fecdd3' : '#bbf7d0'};`;
-    element.textContent = msg;
-    setTimeout(() => showNote(element, "", false), 1000);
-}
 
-reserveForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = nameInput.value.trim();
-    let seat = seatSelect.value;
-
-    if (!name) return showNote(note, "Enter a name!", true);
-
-    if (seat === '') {
-        const free = document.querySelector('button[data-seat]:not([data-occupied])');
-        if (!free) return showNote(note, "Bus is full!", true);
-        seat = free.dataset.seat;
+    if (seatNumber === "#") {
+        const firstFree = seatsGrid.querySelector('button[data-seat]:not([data-occupied])');
+        if (!firstFree) {
+            reserveNotification.textContent = "Bus is full!";
+            return;
+        }
+        seatNumber = firstFree.dataset.seat;
     }
 
-    const btn = document.querySelector(`button[data-seat="${seat}"]`);
-    if (btn.dataset.occupied) return showNote(note, `Seat ${seat} is busy!`, true);
+    if (getSeatButton(seatNumber).dataset.occupied) {
+        reserveNotification.textContent = "This seat is already occupied!";
+        return;
+    }
 
-    btn.dataset.occupied = "true";
-    btn.style.cssText = "display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: #0d9488; border: 1px solid #0f766e; border-radius: 12px; color: white;";
-    btn.innerHTML = `<span style="font-size: 16px; font-weight: bold;">${seat}</span><span style="font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70px;" class="seat-name">${name}</span>`;
-
+    fillSeat(seatNumber, name);
     updateStats();
-    updatePassengerDropdowns();
-    showNote(note, `Reserved seat ${seat} for ${name}!`, false);
-    e.target.reset();
+    updatePassengerLists();
+    reserveNotification.textContent = "Reservation successful! Seat " + seatNumber;
+    reserveForm.reset();
 });
 
-modifyPassenger.addEventListener('change', () => {
-    const seatNum = modifyPassenger.value;
-    if (!seatNum) {
+// parti la modification de produits : 
+modifyPassenger.addEventListener('change', function () {
+    const seatNumber = modifyPassenger.value;
+
+    if (seatNumber === "") {
         modifyName.value = "";
         modifySeat.innerHTML = '<option value="">No reservation selected</option>';
         return;
     }
-    const btn = document.querySelector(`button[data-seat="${seatNum}"]`);
-    const passengerName = btn.querySelector('.seat-name').textContent;
-    
-    modifyName.value = passengerName;
-    
-    let options = '<option value="#">Choose new seat (optional)</option>';
-    for (let i = 1; i <= 20; i++) {
-        const b = document.querySelector(`button[data-seat="${i}"]`);
-        if (!b.dataset.occupied || i == seatNum) {
-            options += `<option value="${i}">Seat ${i}${i == seatNum ? ' (Current)' : ''}</option>`;
+
+    modifyName.value = getSeatButton(seatNumber).querySelector('.seat-name').textContent;
+
+    let options = `<option value="${seatNumber}">Seat ${seatNumber} (Current)</option>`;
+    for (let i = 1; i <= TOTAL_SEATS; i++) {
+        if (!getSeatButton(i).dataset.occupied) {
+            options += `<option value="${i}">Seat ${i}</option>`;
         }
     }
     modifySeat.innerHTML = options;
 });
 
-modifyForm.addEventListener('submit', (e) => {
+modifyForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    const oldSeatNum = modifyPassenger.value;
-    let newSeatNum = modifySeat.value;
-    const name = modifyName.value.trim();
+    const oldSeat = modifyPassenger.value;
+    const newSeat = modifySeat.value;
+    const newName = modifyName.value.trim();
 
-    if (!oldSeatNum) return showNote(modifyNote, "Select a passenger first!", true);
-
-    const oldBtn = document.querySelector(`button[data-seat="${oldSeatNum}"]`);
-
-    if (newSeatNum === '' || !newSeatNum) {
-        newSeatNum = oldSeatNum;
+    if (oldSeat === "") {
+        modifyNotification.textContent = "Please select a passenger!";
+        return;
+    }
+    if (newName === "") {
+        modifyNotification.textContent = "Name can't be empty!";
+        return;
     }
 
-    const newBtn = document.querySelector(`button[data-seat="${newSeatNum}"]`);
-    if (newBtn.dataset.occupied && newBtn !== oldBtn) {
-        return showNote(modifyNote, `Seat ${newSeatNum} is occupied!`, true);
+    if (newSeat !== oldSeat) {
+        freeSeat(oldSeat);
     }
-
-    if (newBtn !== oldBtn) {
-        oldBtn.removeAttribute('data-occupied');
-        oldBtn.style.cssText = "display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: white; border: 1px solid #e5e7eb; border-radius: 12px;";
-        oldBtn.innerHTML = `<span style="font-size: 16px; font-weight: bold; color: #334155;">${oldSeatNum}</span><span style="font-size: 12px; color: #94a3b8;">Libre</span>`;
-    }
-
-    newBtn.dataset.occupied = "true";
-    newBtn.style.cssText = "display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: #0d9488; border: 1px solid #0f766e; border-radius: 12px; color: white;";
-    newBtn.innerHTML = `<span style="font-size: 16px; font-weight: bold;">${newSeatNum}</span><span style="font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70px;" class="seat-name">${name}</span>`;
+    fillSeat(newSeat, newName);
 
     updateStats();
-    updatePassengerDropdowns();
-    showNote(modifyNote, `Updated successfully for ${name}!`, false);
+    updatePassengerLists();
+    modifyNotification.textContent = "Updated successfully!";
     modifyForm.reset();
     modifySeat.innerHTML = '<option value="">No reservation selected</option>';
+});
+
+// parti remove de place : 
+cancelPassenger.addEventListener('change', function () {
+    const seatNumber = cancelPassenger.value;
+
+    if (seatNumber === "") {
+        cancelDetails.classList.add('hidden');
+        return;
+    }
+
+    const name = getSeatButton(seatNumber).querySelector('.seat-name').textContent;
+    cancelDetails.textContent = `${name} — Seat ${seatNumber} — ${SEAT_PRICE} DH`;
+    cancelDetails.classList.remove('hidden');
+});
+
+cancelForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const seatNumber = cancelPassenger.value;
+
+    if (seatNumber === "") {
+        cancelNotification.textContent = "Please select a passenger!";
+        return;
+    }
+
+    freeSeat(seatNumber);
+    updateStats();
+    updatePassengerLists();
+    cancelDetails.classList.add('hidden');
+    cancelNotification.textContent = "Reservation cancelled. Seat " + seatNumber + " is free.";
 });
