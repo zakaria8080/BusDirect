@@ -1,217 +1,184 @@
-const buttons = document.querySelectorAll('#seats-grid button');
-const fullDiv = document.getElementById('bus-full-banner');
+const boutons = document.querySelectorAll('#seats-grid button');
+const pleinDiv = document.getElementById('bus-full-banner');
 
-const availableSpan = document.getElementById('stat-available');
-const occupiedSpan = document.getElementById('stat-occupied');
-const revenueSpan = document.getElementById('stat-revenue');
+const libresSpan = document.getElementById('stat-available');
+const occupesSpan = document.getElementById('stat-occupied');
+const prixSpan = document.getElementById('stat-revenue');
 
-const reserveForm = document.getElementById('reserve-form');
-const reserveInput = document.getElementById('reserve-name');
-const reserveSelect = document.getElementById('reserve-seat');
-const reserveP = document.getElementById('reserve-notification');
+const formRes = document.getElementById('reserve-form');
+const nomRes = document.getElementById('reserve-name');
+const placeRes = document.getElementById('reserve-seat');
+const msgRes = document.getElementById('reserve-notification');
 
-const modifyForm = document.getElementById('modify-form');
-const modifySelect = document.getElementById('modify-passenger');
-const modifyInput = document.getElementById('modify-name');
-const modifySeatSelect = document.getElementById('modify-seat');
-const modifyP = document.getElementById('modify-notification');
+const formMod = document.getElementById('modify-form');
+const choixMod = document.getElementById('modify-passenger');
+const nomMod = document.getElementById('modify-name');
+const placeMod = document.getElementById('modify-seat');
+const msgMod = document.getElementById('modify-notification');
 
-const cancelForm = document.getElementById('cancel-form');
-const cancelSelect = document.getElementById('cancel-passenger');
-const cancelDiv = document.getElementById('cancel-details');
-const cancelP = document.getElementById('cancel-notification');
+const formAnn = document.getElementById('cancel-form');
+const choixAnn = document.getElementById('cancel-passenger');
+const infoAnn = document.getElementById('cancel-details');
+const msgAnn = document.getElementById('cancel-notification');
 
-let seats = [];
+// les 20 places : on lit le localStorage, sinon vide
+let tabPlaces = [];
 for (let i = 1; i <= 20; i++) {
-    seats[i] = "";
-}
-
-function save() {
-    try {
-        localStorage.setItem("busSeats", JSON.stringify(seats));
-    } catch (error) {
-        console.log("Sauvegarde impossible :", error);
-    }
-}
-
-function load() {
-    try {
-        const text = localStorage.getItem("busSeats");
-        if (text !== null) {
-            const list = JSON.parse(text);
-            for (let i = 1; i <= 20; i++) {
-                if (list[i]) {
-                    seats[i] = list[i];
-                }
-            }
-        }
-    } catch (error) {
-        console.log("Chargement impossible :", error);
-    }
-}
-
-function showSeats() {
-    for (let i = 0; i < buttons.length; i++) {
-        const number = i + 1;
-        if (seats[number] === "") {
-            buttons[i].style.background = "white";
-            buttons[i].style.color = "black";
-            buttons[i].innerHTML = "<span>" + number + "</span><span>Libre</span>";
-        } else {
-            buttons[i].style.background = "#0d9488";
-            buttons[i].style.color = "white";
-            buttons[i].innerHTML = "<span>" + number + "</span><span>" + seats[number] + "</span>";
-        }
-    }
-}
-
-function showStats() {
-    let count = 0;
-    for (let i = 1; i <= 20; i++) {
-        if (seats[i] !== "") {
-            count++;
-        }
-    }
-    occupiedSpan.textContent = count;
-    availableSpan.textContent = 20 - count;
-    revenueSpan.textContent = count * 80 + " DH";
-
-    if (count === 20) {
-        fullDiv.classList.remove('hidden');
+    let nom = localStorage.getItem("place" + i);
+    if (nom === null) {
+        tabPlaces[i] = "";
     } else {
-        fullDiv.classList.add('hidden');
+        tabPlaces[i] = nom;
     }
 }
 
-function showOptions() {
-    let html = '<option value="">Select a passenger…</option>';
+// met à jour tout l'affichage + sauvegarde
+function actualiser() {
+    let total = 0;
+    let code = '<option value="">Select a passenger…</option>';
+
     for (let i = 1; i <= 20; i++) {
-        if (seats[i] !== "") {
-            html += '<option value="' + i + '">' + seats[i] + ' (Seat ' + i + ')</option>';
+        // bouton de la place
+        if (tabPlaces[i] === "") {
+            boutons[i - 1].style.background = "white";
+            boutons[i - 1].style.color = "black";
+            boutons[i - 1].innerHTML = "<span>" + i + "</span><span>Libre</span>";
+        } else {
+            boutons[i - 1].style.background = "#0d9488";
+            boutons[i - 1].style.color = "white";
+            boutons[i - 1].innerHTML = "<span>" + i + "</span><span>" + tabPlaces[i] + "</span>";
+            total = total + 1;
+            code = code + '<option value="' + i + '">' + tabPlaces[i] + ' (Seat ' + i + ')</option>';
         }
-    }
-    modifySelect.innerHTML = html;
-    cancelSelect.innerHTML = html;
-}
 
-function refresh() {
-    showSeats();
-    showStats();
-    showOptions();
-    save();
+        // sauvegarde
+        localStorage.setItem("place" + i, tabPlaces[i]);
+    }
+
+    // statistiques
+    occupesSpan.textContent = total;
+    libresSpan.textContent = 20 - total;
+    prixSpan.textContent = total * 80 + " DH";
+
+    if (total === 20) {
+        pleinDiv.style.display = "block";
+    } else {
+        pleinDiv.style.display = "none";
+    }
+
+    // listes des passagers
+    choixMod.innerHTML = code;
+    choixAnn.innerHTML = code;
 }
 
 // Réserver une place
-reserveForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+formRes.onsubmit = function () {
+    let nom = nomRes.value;
+    let place = placeRes.value;
 
-    const name = reserveInput.value.trim();
-    let seat = reserveSelect.value;
-
-    if (name === "") {
-        reserveP.textContent = "Please enter a name!";
-        return;
+    if (nom === "") {
+        msgRes.textContent = "Please enter a name!";
+        return false;
     }
 
-    if (seat === "#") {
+    // "automatique" : première place libre
+    if (place === "#") {
         for (let i = 1; i <= 20; i++) {
-            if (seats[i] === "") {
-                seat = i;
+            if (tabPlaces[i] === "") {
+                place = i;
                 break;
             }
         }
     }
 
-    if (seat === "#") {
-        reserveP.textContent = "Bus is full!";
-        return;
+    if (place === "#") {
+        msgRes.textContent = "Bus is full!";
+        return false;
     }
 
-    if (seats[seat] !== "") {
-        reserveP.textContent = "This seat is already occupied!";
-        return;
+    if (tabPlaces[place] !== "") {
+        msgRes.textContent = "This seat is already occupied!";
+        return false;
     }
 
-    seats[seat] = name;
-    refresh();
-    reserveP.textContent = "Reservation successful! Seat " + seat;
-    reserveForm.reset();
-});
+    tabPlaces[place] = nom;
+    actualiser();
+    msgRes.textContent = "Reservation successful! Seat " + place;
+    formRes.reset();
+    return false;
+};
 
 // Modifier une réservation
-modifySelect.addEventListener('change', function () {
-    const seat = modifySelect.value;
+choixMod.onchange = function () {
+    let place = choixMod.value;
 
-    if (seat === "") {
-        modifyInput.value = "";
-        modifySeatSelect.innerHTML = '<option value="">No reservation selected</option>';
+    if (place === "") {
+        nomMod.value = "";
+        placeMod.innerHTML = '<option value="">No reservation selected</option>';
         return;
     }
 
-    modifyInput.value = seats[seat];
+    nomMod.value = tabPlaces[place];
 
-    let html = '<option value="' + seat + '">Seat ' + seat + ' (Current)</option>';
+    let code = '<option value="' + place + '">Seat ' + place + ' (Current)</option>';
     for (let i = 1; i <= 20; i++) {
-        if (seats[i] === "") {
-            html += '<option value="' + i + '">Seat ' + i + '</option>';
+        if (tabPlaces[i] === "") {
+            code = code + '<option value="' + i + '">Seat ' + i + '</option>';
         }
     }
-    modifySeatSelect.innerHTML = html;
-});
+    placeMod.innerHTML = code;
+};
 
-modifyForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+formMod.onsubmit = function () {
+    let anciennePlace = choixMod.value;
+    let nouvellePlace = placeMod.value;
+    let nouveauNom = nomMod.value;
 
-    const oldSeat = modifySelect.value;
-    const newSeat = modifySeatSelect.value;
-    const newName = modifyInput.value.trim();
-
-    if (oldSeat === "") {
-        modifyP.textContent = "Please select a passenger!";
-        return;
+    if (anciennePlace === "") {
+        msgMod.textContent = "Please select a passenger!";
+        return false;
     }
-    if (newName === "") {
-        modifyP.textContent = "Name can't be empty!";
-        return;
+    if (nouveauNom === "") {
+        msgMod.textContent = "Name can't be empty!";
+        return false;
     }
 
-    seats[oldSeat] = "";
-    seats[newSeat] = newName;
-    refresh();
+    tabPlaces[anciennePlace] = "";
+    tabPlaces[nouvellePlace] = nouveauNom;
+    actualiser();
 
-    modifyP.textContent = "Updated successfully!";
-    modifyForm.reset();
-    modifySeatSelect.innerHTML = '<option value="">No reservation selected</option>';
-});
+    msgMod.textContent = "Updated successfully!";
+    formMod.reset();
+    placeMod.innerHTML = '<option value="">No reservation selected</option>';
+    return false;
+};
 
 // Supprimer une réservation
-cancelSelect.addEventListener('change', function () {
-    const seat = cancelSelect.value;
+choixAnn.onchange = function () {
+    let place = choixAnn.value;
 
-    if (seat === "") {
-        cancelDiv.classList.add('hidden');
+    if (place === "") {
+        infoAnn.style.display = "none";
         return;
     }
 
-    cancelDiv.textContent = seats[seat] + " — Seat " + seat + " — 80 DH";
-    cancelDiv.classList.remove('hidden');
-});
+    infoAnn.textContent = tabPlaces[place] + " — Seat " + place + " — 80 DH";
+    infoAnn.style.display = "block";
+};
 
-cancelForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+formAnn.onsubmit = function () {
+    let place = choixAnn.value;
 
-    const seat = cancelSelect.value;
-
-    if (seat === "") {
-        cancelP.textContent = "Please select a passenger!";
-        return;
+    if (place === "") {
+        msgAnn.textContent = "Please select a passenger!";
+        return false;
     }
 
-    seats[seat] = "";
-    refresh();
-    cancelDiv.classList.add('hidden');
-    cancelP.textContent = "Reservation cancelled. Seat " + seat + " is free.";
-});
+    tabPlaces[place] = "";
+    actualiser();
+    infoAnn.style.display = "none";
+    msgAnn.textContent = "Reservation cancelled. Seat " + place + " is free.";
+    return false;
+};
 
-load();
-refresh();
+actualiser();
