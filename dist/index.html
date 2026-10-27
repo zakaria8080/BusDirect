@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>BusDirect — Safi → Marrakech Seat Management</title>
+    <meta name="description" content="Interactive bus seat reservation management for the Safi → Marrakech route." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900">
+    <a href="#main"
+        class="absolute left-[-9999px] top-0 z-50 rounded-br-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white focus:left-0">Skip
+        to main content</a>
+
+    <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-900 text-white">
+        <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+            <a href="./index.html" aria-label="BusDirect home" class="flex min-w-0 items-center gap-2.5 rounded-lg">
+                <span class="flex rounded-xl bg-teal-500/10 p-1.5 shadow-[0_0_0_1px_rgb(45_212_191/0.25)]">
+                    <img src="/assets/bus-puSQC0b3.svg" alt="" aria-hidden="true"
+                        class="h-6 w-6 filter-[invert(74%)_sepia(66%)_saturate(407%)_hue-rotate(124deg)_brightness(96%)_contrast(90%)]">
+                </span>
+                <span class="min-w-0">
+                    <span
+                        class="block overflow-hidden text-ellipsis whitespace-nowrap text-lg font-bold tracking-tight">BusDirect</span>
+                    <span
+                        class="hidden text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 sm:block">Seat
+                        reservations</span>
+                </span>
+            </a>
+            <nav aria-label="Primary"
+                class="flex shrink-0 items-center gap-1 rounded-xl border border-slate-700/80 bg-slate-800/60 p-1">
+                <a href="./index.html" aria-current="page"
+                    class="inline-flex min-h-11 items-center gap-2 rounded-lg bg-teal-500 px-2.5 py-2 text-sm font-semibold text-slate-950 shadow-sm transition-colors hover:bg-teal-500 sm:px-4">
+                    <span class="inline sm:hidden">Seats</span>
+                    <span class="hidden sm:inline">Seat management</span>
+                </a>
+                <a href="./tickets.html"
+                    class="inline-flex min-h-11 items-center gap-2 rounded-lg px-2.5 py-2 text-sm font-semibold text-slate-300 transition-colors hover:bg-slate-700 hover:text-white sm:px-4">
+                    <img src="data:image/svg+xml,%3c!--%20MIT%20License%20Copyright%20(c)%20Tailwind%20Labs,%20Inc.%20Permission%20is%20hereby%20granted,%20free%20of%20charge,%20to%20any%20person%20obtaining%20a%20copy%20of%20this%20software%20and%20associated%20documentation%20files%20(the%20'Software'),%20to%20deal%20in%20the%20Software%20without%20restriction,%20including%20without%20limitation%20the%20rights%20to%20use,%20copy,%20modify,%20merge,%20publish,%20distribute,%20sublicense,%20and/or%20sell%20copies%20of%20the%20Software,%20and%20to%20permit%20persons%20to%20whom%20the%20Software%20is%20furnished%20to%20do%20so,%20subject%20to%20the%20following%20conditions:%20The%20above%20copyright%20notice%20and%20this%20permission%20notice%20shall%20be%20included%20in%20all%20copies%20or%20substantial%20portions%20of%20the%20Software.%20THE%20SOFTWARE%20IS%20PROVIDED%20'AS%20IS',%20WITHOUT%20WARRANTY%20OF%20ANY%20KIND,%20EXPRESS%20OR%20IMPLIED,%20INCLUDING%20BUT%20NOT%20LIMITED%20TO%20THE%20WARRANTIES%20OF%20MERCHANTABILITY,%20FITNESS%20FOR%20A%20PARTICULAR%20PURPOSE%20AND%20NONINFRINGEMENT.%20IN%20NO%20EVENT%20SHALL%20THE%20AUTHORS%20OR%20COPYRIGHT%20HOLDERS%20BE%20LIABLE%20FOR%20ANY%20CLAIM,%20DAMAGES%20OR%20OTHER%20LIABILITY,%20WHETHER%20IN%20AN%20ACTION%20OF%20CONTRACT,%20TORT%20OR%20OTHERWISE,%20ARISING%20FROM,%20OUT%20OF%20OR%20IN%20CONNECTION%20WITH%20THE%20SOFTWARE%20OR%20THE%20USE%20OR%20OTHER%20DEALINGS%20IN%20THE%20SOFTWARE.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='currentColor'%20aria-hidden='true'%20data-slot='icon'%3e%3cpath%20fill-rule='evenodd'%20d='M1.5%206.375c0-1.036.84-1.875%201.875-1.875h17.25c1.035%200%201.875.84%201.875%201.875v3.026a.75.75%200%200%201-.375.65%202.249%202.249%200%200%200%200%203.898.75.75%200%200%201%20.375.65v3.026c0%201.035-.84%201.875-1.875%201.875H3.375A1.875%201.875%200%200%201%201.5%2017.625v-3.026a.75.75%200%200%201%20.374-.65%202.249%202.249%200%200%200%200-3.898.75.75%200%200%201-.374-.65V6.375Zm15-1.125a.75.75%200%200%201%20.75.75v.75a.75.75%200%200%201-1.5%200V6a.75.75%200%200%201%20.75-.75Zm.75%204.5a.75.75%200%200%200-1.5%200v.75a.75.75%200%200%200%201.5%200v-.75Zm-.75%203a.75.75%200%200%201%20.75.75v.75a.75.75%200%200%201-1.5%200v-.75a.75.75%200%200%201%20.75-.75Zm.75%204.5a.75.75%200%200%200-1.5%200V18a.75.75%200%200%200%201.5%200v-.75ZM6%2012a.75.75%200%200%201%20.75-.75H12a.75.75%200%200%201%200%201.5H6.75A.75.75%200%200%201%206%2012Zm.75%202.25a.75.75%200%200%200%200%201.5h3a.75.75%200%200%200%200-1.5h-3Z'%20clip-rule='evenodd'/%3e%3c/svg%3e" alt="" aria-hidden="true"
+                        class="h-4 w-4 shrink-0 filter-[brightness(0)_invert(0.82)]">
+                    Tickets
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main" class="mx-auto max-w-6xl scroll-mt-16 px-4 py-6 sm:px-6">
+        <section
+            class="mb-4 rounded-2xl border border-slate-800 bg-slate-900 px-4 py-6 text-center text-white shadow-xs sm:py-8">
+            <h1 class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-2xl font-bold sm:text-4xl">
+                <span>Safi</span>
+                <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%20fill='%2314b8a6'%20aria-hidden='true'%3e%3cpath%20fill-rule='evenodd'%20d='M3%2010a.75.75%200%2001.75-.75h9.69L10.22%205.97a.75.75%200%20111.06-1.06l4.5%204.5a.75.75%200%20010%201.06l-4.5%204.5a.75.75%200%2011-1.06-1.06l3.22-3.22H3.75A.75.75%200%20013%2010z'%20clip-rule='evenodd'/%3e%3c/svg%3e" alt="" aria-hidden="true"
+                    class="h-6 w-6 shrink-0 sm:h-8 sm:w-8 filter-[brightness(0)_saturate(100%)_invert(63%)_sepia(11%)_saturate(540%)_hue-rotate(152deg)_brightness(92%)_contrast(95%)]">
+                <span>Marrakech</span>
+            </h1>
+            <p class="mt-2 text-sm text-slate-300">20-seat coach · 80 DH per seat</p>
+        </section>
+
+        <div id="bus-full-banner"
+            class="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900 hidden"
+            role="status">
+            <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%20fill='%23f59e0b'%20aria-hidden='true'%3e%3cpath%20fill-rule='evenodd'%20d='M8.257%203.1a1.5%201.5%200%20012.624%200l6.345%2011.01A1.5%201.5%200%200115.948%2016.5H4.19a1.5%201.5%200%2001-1.278-2.39L8.257%203.1zM10%207a.75.75%200%2001.75.75v2.5a.75.75%200%2001-1.5%200v-2.5A.75.75%200%200110%207zm0%206.5a.75.75%200%20100%201.5.75.75%200%20000-1.5z'%20clip-rule='evenodd'/%3e%3c/svg%3e" alt="" aria-hidden="true"
+                class="mr-1 inline-block h-5 w-5 align-[-3px] filter-[brightness(0)_saturate(100%)_invert(31%)_sepia(58%)_saturate(494%)_hue-rotate(33deg)_brightness(94%)_contrast(95%)]">
+            The bus is full — all 20 seats are occupied. New reservations are paused until a seat is released.
+        </div>
+
+        <div aria-label="Live statistics" class="mb-4 grid grid-cols-3 gap-3">
+            <div class="rounded-2xl border border-slate-200 bg-white p-3 text-center shadow-xs sm:p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Available</p>
+                <p id="stat-available" class="mt-1 text-2xl font-bold text-teal-700">20</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-3 text-center shadow-xs sm:p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Occupied</p>
+                <p id="stat-occupied" class="mt-1 text-2xl font-bold text-slate-900">0</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-3 text-center shadow-xs sm:p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Revenue</p>
+                <p id="stat-revenue" class="mt-1 text-2xl font-bold text-teal-700">0 DH</p>
+            </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+            <section aria-labelledby="plan-title"
+                class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs sm:p-6">
+                <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+                    <h2 id="plan-title" class="text-base font-bold text-slate-900">Seating plan</h2>
+                    <div aria-label="Seat status legend"
+                        class="flex flex-wrap items-center gap-4 text-xs text-slate-600">
+                        <span class="flex flex-col items-center gap-1">
+                            <span class="flex cursor-default flex-col items-center" aria-hidden="true">
+                                <span class="h-2 w-4 rounded-t-sm border border-gray-300 bg-white"></span>
+                                <span
+                                    class="-mt-px flex h-5 w-5 items-center justify-center rounded-sm border border-gray-300 bg-white"></span>
+                                <span class="-mt-1 flex items-end">
+                                    <span class="h-2 w-1 rounded-l-sm border border-gray-300 bg-white"></span>
+                                    <span class="h-2 w-5 rounded-sm border border-gray-300 bg-white"></span>
+                                    <span class="h-2 w-1 rounded-r-sm border border-gray-300 bg-white"></span>
+                                </span>
+                            </span>Available</span>
+                        <span class="flex flex-col items-center gap-1">
+                            <span class="flex cursor-default flex-col items-center" aria-hidden="true">
+                                <span class="h-2 w-4 rounded-t-sm border border-teal-700 bg-teal-600"></span>
+                                <span
+                                    class="-mt-px flex h-5 w-5 items-center justify-center rounded-sm border border-teal-700 bg-teal-600"></span>
+                                <span class="-mt-1 flex items-end">
+                                    <span class="h-2 w-1 rounded-l-sm border border-teal-700 bg-teal-600"></span>
+                                    <span class="h-2 w-5 rounded-sm border border-teal-700 bg-teal-600"></span>
+                                    <span class="h-2 w-1 rounded-r-sm border border-teal-700 bg-teal-600"></span>
+                                </span>
+                            </span>Occupied</span>
+                        <span class="flex flex-col items-center gap-1">
+                            <span class="flex cursor-default flex-col items-center" aria-hidden="true">
+                                <span class="h-2 w-4 rounded-t-sm border border-teal-600 bg-teal-100"></span>
+                                <span
+                                    class="-mt-px flex h-5 w-5 items-center justify-center rounded-sm border border-teal-600 bg-teal-100"></span>
+                                <span class="-mt-1 flex items-end">
+                                    <span class="h-2 w-1 rounded-l-sm border border-teal-600 bg-teal-100"></span>
+                                    <span class="h-2 w-5 rounded-sm border border-teal-600 bg-teal-100"></span>
+                                    <span class="h-2 w-1 rounded-r-sm border border-teal-600 bg-teal-100"></span>
+                                </span>
+                            </span>Selected</span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="search-input" class="mb-1 block text-sm font-semibold text-slate-700">Find
+                        passenger</label>
+                    <div class="relative">
+                        <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%20fill='%2364748b'%20aria-hidden='true'%3e%3cpath%20fill-rule='evenodd'%20d='M9%203.5a5.5%205.5%200%20100%2011%205.5%205.5%200%20000-11zM2%209a7%207%200%201112.452%204.391l3.328%203.329a.75.75%200%2011-1.06%201.06l-3.329-3.328A7%207%200%20012%209z'%20clip-rule='evenodd'/%3e%3c/svg%3e" alt="" aria-hidden="true"
+                            class="pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-slate-400 filter-[brightness(0)_saturate(100%)_invert(49%)_sepia(11%)_saturate(500%)_hue-rotate(175deg)_brightness(94%)_contrast(90%)]">
+                        <input id="search-input" type="search" autocomplete="off"
+                            placeholder="Search by name, e.g. Ahmed"
+                            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pl-10 text-sm placeholder:text-slate-400" />
+                    </div>
+                    <p id="search-empty" class="mt-1 text-sm font-medium text-amber-700 hidden" role="status">No
+                        passenger matches your search.</p>
+                </div>
+                <div class="Place">
+
+                    <div class="max-w-md mx-auto p-5 bg-slate-50 border border-gray-200 rounded-2xl shadow-sm">
+
+                        <div
+                            class="flex items-center justify-between mb-5 p-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-slate-700 shadow-sm">
+                            <div class="flex items-center gap-2">
+                                <span class="p-1 bg-gray-50 text-600 rounded-lg"><i class="fa-solid fa-bus-simple"></i>
+                                </span>
+                                <span>Poste Conducteur</span>
+                            </div>
+                            <span class="text-xs text-slate-400">Devant</span>
+                        </div>
+                        <div id="seats-grid" class="grid grid-cols-4 gap-3">
+
+                            <!-- Place 01 -->
+                            <button type="button" data-seat="1"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">01</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 02 -->
+                            <button type="button" data-seat="2"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">02</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 03 -->
+                            <button type="button" data-seat="3"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">03</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 04 -->
+                            <button type="button" data-seat="4"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">04</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 05 -->
+                            <button type="button" data-seat="5"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">05</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 06 -->
+                            <button type="button" data-seat="6"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">06</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 07 -->
+                            <button type="button" data-seat="7"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">07</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 08 -->
+                            <button type="button" data-seat="8"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">08</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 09 -->
+                            <button type="button" data-seat="9"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">09</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 10 -->
+                            <button type="button" data-seat="10"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">10</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 11 -->
+                            <button type="button" data-seat="11"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">11</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 12 -->
+                            <button type="button" data-seat="12"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">12</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 13 -->
+                            <button type="button" data-seat="13"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">13</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 14 -->
+                            <button type="button" data-seat="14"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">14</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 15 -->
+                            <button type="button" data-seat="15"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">15</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 16 -->
+                            <button type="button" data-seat="16"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">16</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 17 -->
+                            <button type="button" data-seat="17"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">17</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 18 -->
+                            <button type="button" data-seat="18"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">18</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 19 -->
+                            <button type="button" data-seat="19"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">19</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+
+                            <!-- Place 20 -->
+                            <button type="button" data-seat="20"
+                                class="flex flex-col items-center justify-center p-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-blue-500 hover:bg-blue-50/50 transition cursor-pointer group">
+                                <span class="text-base font-bold text-slate-700 group-hover:text-blue-600">20</span>
+                                <span class="text-xs text-slate-400 font-medium">Libre</span>
+                            </button>
+            </section>
+            <div class="flex flex-col gap-6" id="create-element">
+                <section aria-labelledby="reserve-title"
+                    class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5" id="section-create">
+                    <h2 id="reserve-title" class="mb-3 text-base font-bold text-slate-900">New reservation</h2>
+                    <form id="reserve-form">
+                        <label for="reserve-name" class="mb-1 block text-sm font-semibold text-slate-700">Passenger
+                            name</label>
+                        <input id="reserve-name" name="reserve-name" type="text" autocapitalize="none"
+                            enterkeyhint="done" autocomplete="off" maxlength="60" placeholder="e.g. Ahmed Amine"
+                            class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400" />
+                        <label for="reserve-seat" class="mb-1 block text-sm font-semibold text-slate-700">Seat
+                            (optional)</label>
+                        <select id="reserve-seat" name="reserve-seat"
+                            class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
+                            <option value="#">Choose a seat</option>
+                            <option value="1">seat 1</option>
+                            <option value="2">seat 2</option>
+                            <option value="3">seat 3</option>
+                            <option value="4">seat 4</option>
+                            <option value="5">seat 5</option>
+                            <option value="6">seat 6</option>
+                            <option value="7">seat 7</option>
+                            <option value="8">seat 8</option>
+                            <option value="9">seat 9</option>
+                            <option value="10">seat 10</option>
+                            <option value="11">seat 11</option>
+                            <option value="12">seat 12</option>
+                            <option value="13">seat 13</option>
+                            <option value="14">seat 14</option>
+                            <option value="15">seat 15</option>
+                            <option value="16">seat 16</option>
+                            <option value="17">seat 17</option>
+                            <option value="18">seat 18</option>
+                            <option value="19">seat 19</option>
+                            <option value="20">seat 20</option>
+                        </select>
+                        <button type="submit" id="reserve-submit"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-700 active:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50">
+                            <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%20fill='%23ffffff'%20aria-hidden='true'%3e%3cpath%20fill-rule='evenodd'%20d='M10%2018a8%208%200%20100-16%208%208%200%20000%2016zm1-11a1%201%200%2010-2%200v2H7a1%201%200%20100%202h2v2a1%201%200%20102%200v-2h2a1%201%200%20100-2h-2V7z'%20clip-rule='evenodd'/%3e%3c/svg%3e" alt="" aria-hidden="true" class="h-4 w-4 shrink-0" />
+                            Reserve seat — 80 DH
+                        </button>
+                    </form>
+                    <div id="reserve-notification" class="mt-3" aria-live="polite"></div>
+                    <div id="ticket-preview" class="mt-3 hidden" role="status" aria-live="polite"></div>
+                </section>
+
+                <section aria-labelledby="modify-title"
+                    class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5">
+                    <h2 id="modify-title" class="mb-3 text-base font-bold text-slate-900">Modify reservation</h2>
+                    <form id="modify-form" novalidate>
+                        <label for="modify-passenger"
+                            class="mb-1 block text-sm font-semibold text-slate-700">Passenger</label>
+                        <select id="modify-passenger" name="modify-passenger"
+                            class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
+                            <option value="">Select a passenger…</option>                        </select>
+                        <label for="modify-name" class="mb-1 block text-sm font-semibold text-slate-700">Passenger
+                            name</label>
+                        <input id="modify-name" type="text" autocapitalize="none" enterkeyhint="done" autocomplete="off"
+                            maxlength="60"
+                            class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400"
+                            placeholder="Name appears after selecting a passenger" />
+                        <label for="modify-seat" class="mb-1 block text-sm font-semibold text-slate-700">Destination
+                            seat</label>
+                        <select id="modify-seat"
+                            class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
+                            <option value="">No reservation selected</option>
+                        </select>
+                        <button type="submit"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-slate-800 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700 active:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-50">
+                            <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%20fill='%23ffffff'%20aria-hidden='true'%3e%3cpath%20fill-rule='evenodd'%20d='M16.704%205.29a1%201%200%20010%201.415l-7.5%207.5a1%201%200%2001-1.415%200l-3.5-3.5a1%201%200%20111.415-1.415l2.793%202.794%206.792-6.793a1%201%200%20011.415%200z'%20clip-rule='evenodd'/%3e%3c/svg%3e" alt="" aria-hidden="true" class="h-4 w-4 shrink-0" />
+                            Save changes
+                        </button>
+                    </form>
+                    <div id="modify-notification" class="mt-3" aria-live="polite"></div>
+                </section>
+
+                <section aria-labelledby="cancel-title"
+                    class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5">
+                    <h2 id="cancel-title" class="mb-3 text-base font-bold text-slate-900">Cancel reservation</h2>
+                    <form id="cancel-form" novalidate>
+                        <label for="cancel-passenger"
+                            class="mb-1 block text-sm font-semibold text-slate-700">Passenger</label>
+                        <select id="cancel-passenger" name="cancel-passenger"
+                            class="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 pr-9 text-sm">
+                            <option value="">Select a passenger…</option>
+                        </select>
+                        <p id="cancel-details" class="mb-3 text-sm text-slate-600 hidden"></p>
+                        <button type="submit"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-rose-300 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-700 transition-colors hover:bg-rose-100 active:bg-rose-200 disabled:cursor-not-allowed disabled:opacity-50">
+                            <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2020%2020'%20fill='%23ef4444'%20aria-hidden='true'%3e%3cpath%20fill-rule='evenodd'%20d='M8.75%201A2.75%202.75%200%20006%203.75v.443c-.795.077-1.584.176-2.365.298a.75.75%200%2010.23%201.482l.149-.022.841%2010.518A2.75%202.75%200%20007.596%2019h4.807a2.75%202.75%200%20002.742-2.53l.841-10.52.149.023a.75.75%200%2000.23-1.482A41.03%2041.03%200%200014%204.193v-.443A2.75%202.75%200%200011.25%201h-2.5zM10%204c.84%200%201.673.025%202.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69%200-1.25.56-1.25%201.25v.325C8.327%204.025%209.16%204%2010%204z'%20clip-rule='evenodd'/%3e%3c/svg%3e" alt="" aria-hidden="true" class="h-4 w-4 shrink-0" />
+                            Cancel reservation
+                        </button>
+                    </form>
+                    <div id="cancel-notification" class="mt-3" aria-live="polite"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

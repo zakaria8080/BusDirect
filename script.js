@@ -81,7 +81,7 @@ formRes.onsubmit = function () {
         return false;
     }
 
-    // "automatique" : première place libre
+    // première place libre
     if (place === "#") {
         for (let i = 1; i <= 20; i++) {
             if (tabPlaces[i] === "") {
